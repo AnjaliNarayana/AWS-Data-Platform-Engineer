@@ -1,0 +1,14 @@
+# Use Python 3.9 as base image
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install boto3
+RUN pip install boto3
+
+# Copy the Python script into the container
+COPY python_script.py /app/python_script.py
+
+# Set the default command to run the Python script
+CMD ["python", "python_script.py"]
