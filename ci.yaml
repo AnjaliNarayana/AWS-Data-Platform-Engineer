@@ -3,7 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main  #triggers the CI pipeline whenever the code is pushed to the main branch.
+      - main  # triggers the CI pipeline whenever the code is pushed to the main branch.
 
 jobs:
   build_and_test:
