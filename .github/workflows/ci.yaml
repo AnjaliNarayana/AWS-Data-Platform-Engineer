@@ -3,22 +3,39 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main  # triggers the CI pipeline whenever the code is pushed to the main branch.
+      - main  # triggers the CI pipeline whenever code is pushed to the main branch.
 
 jobs:
-  build_and_test:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # Set up Terraform (unchanged)
+    - name: Set up Terraform
+      run: |
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb https://apt.releases.hashicorp.com stable main"
+        sudo apt-get update
+        sudo apt-get install terraform
+
+    # Run Terraform Plan & Apply to provision infrastructure
+    - name: Run Terraform Plan & Apply
+      run: |
+        terraform init
+        terraform apply -auto-approve
+
+    # Set up Docker Buildx (unchanged)
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    # Build Docker image from Dockerfile
     - name: Build Docker image
       run: docker build -t python-s3-upload .
 
+    # Run Docker container to test Python script (upload lambda.zip)
     - name: Run Docker container
       run: |
-        docker run --rm python-s3-upload  # remove the container after completion of tasks.
+        docker run --rm python-s3-upload  # remove the container after completion of tasks
