@@ -59,6 +59,10 @@ resource "aws_iam_role_policy_attachment" "lambda_role_policy_attachment" {
   policy_arn = aws_iam_policy.lambda_policy.arn
 }
 
+data "external" "upload_lambda_zip" {
+  program = ["python3", "./upload_lambda.py", aws_s3_bucket.example_bucket.bucket, "lambda.zip"]
+}
+
 # Create the Lambda Function
 resource "aws_lambda_function" "example_lambda" {
   function_name = "example-lambda"
