@@ -40,9 +40,9 @@ resource "aws_iam_policy" "lambda_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action   = "logs:*"
+        Action   = "logs:*"  
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "*" #granting permissions to all resources(log-events, log-streams, log-groups). you can specify for each log stream or log-group
       },
       {
         Action   = "s3:*"
